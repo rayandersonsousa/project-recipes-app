@@ -9,14 +9,17 @@ describe('Testes para a tela de Login', () => {
   // it('Testa se a página login é renderizada na rota "/"', () => {
   //   render(<App />);
   // });
+  const emailString = 'email-input';
+  const senhaString = 'password-input';
+
   it('Testa se os campos de login estão na tela', () => {
     renderWithRouter(
       <Provider>
         <App />
       </Provider>,
     );
-    const emailInput = screen.getByTestId('email-input');
-    const passInput = screen.getByTestId('password-input');
+    const emailInput = screen.getByTestId(emailString);
+    const passInput = screen.getByTestId(senhaString);
 
     expect(emailInput).toBeInTheDocument();
     expect(passInput).toBeInTheDocument();
@@ -27,8 +30,8 @@ describe('Testes para a tela de Login', () => {
         <App />
       </Provider>,
     );
-    const emailInput = screen.getByTestId('email-input');
-    const passInput = screen.getByTestId('password-input');
+    const emailInput = screen.getByTestId(emailString);
+    const passInput = screen.getByTestId(senhaString);
     const loginBtn = screen.getByRole('button', {
       name: /enter/i,
     });
@@ -44,8 +47,8 @@ describe('Testes para a tela de Login', () => {
         <App />
       </Provider>,
     );
-    const emailInput = screen.getByTestId('email-input');
-    const passInput = screen.getByTestId('password-input');
+    const emailInput = screen.getByTestId(emailString);
+    const passInput = screen.getByTestId(senhaString);
     const loginBtn = screen.getByRole('button', {
       name: /enter/i,
     });
