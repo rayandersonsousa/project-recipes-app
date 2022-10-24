@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 function Login() {
-  const { handleInpuEmail, handleInputPassword } = useContext(AppContext);
+  const { handleInpuEmail, handleInputPassword, isDisable } = useContext(AppContext);
   return (
     <form>
       <input
@@ -18,6 +18,7 @@ function Login() {
       <button
         type="button"
         data-testid="login-submit-btn"
+        disabled={ isDisable }
       >
         Enter
       </button>
