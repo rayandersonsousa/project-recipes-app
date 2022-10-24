@@ -4,6 +4,7 @@ import './App.css';
 import rockGlass from './images/rockGlass.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './components/Login';
+import Meals from './components/Meals';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       </object>
       <Switch>
         <Route exact path="/" component={ Login } />
+        <Route exact path="/meals" component={ Meals } />
       </Switch>
     </div>
   );

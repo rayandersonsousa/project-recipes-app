@@ -26,13 +26,20 @@ function Provider({ children }) {
     handleDisable();
   };
 
+  const saveEmail = () => {
+    const userEmail = {
+      email,
+    };
+    localStorage.setItem('user', JSON.stringify(userEmail));
+  };
+
   const contexto = useMemo(() => ({
     email,
     handleInpuEmail,
     password,
     handleInputPassword,
     isDisable,
-    handleDisable,
+    saveEmail,
   }), [email, password, isDisable]);
 
   return (
