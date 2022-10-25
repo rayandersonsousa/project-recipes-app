@@ -5,6 +5,7 @@ import Header from './Header';
 function Profile() {
   const storage = JSON.parse(localStorage.getItem('user'));
   const emailStorage = storage.email;
+  console.log('log', emailStorage);
   const history = useHistory();
 
   const handleClickDone = () => {
@@ -15,9 +16,15 @@ function Profile() {
     history.push('/favorite-recipes');
   };
 
+  const handleClickLogout = () => {
+    localStorage.clear();
+    history.push('/');
+  };
+
   return (
     <div>
       <Header titulo="Profile" pesquisa="false" />
+
       <h1>Profile</h1>
 
       <h2 data-testid="profile-email">{emailStorage}</h2>
@@ -38,7 +45,14 @@ function Profile() {
         Favorite Recipes
 
       </button>
-      <button type="button" data-testid="profile-logout-btn">Logout</button>
+      <button
+        type="button"
+        data-testid="profile-logout-btn"
+        onClick={ handleClickLogout }
+      >
+        Logout
+
+      </button>
     </div>
   );
 }
