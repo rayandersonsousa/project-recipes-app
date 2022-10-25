@@ -46,7 +46,7 @@ function Provider({ children }) {
       if (meals === null) {
         return global.alert(stringErro);
       }
-      return setRecipesMeals(data);
+      return setRecipesMeals(meals);
     }
     case 'name': {
       const endpoint = `https://www.themealdb.com/api/json/v1/1/search.php?s=${valorDeBusca}`;
@@ -56,7 +56,7 @@ function Provider({ children }) {
       if (meals === null) {
         return global.alert(stringErro);
       }
-      return setRecipesMeals(data);
+      return setRecipesMeals(meals);
     }
     case 'firstletter': {
       if (valorDeBusca.length !== 1) {
@@ -69,7 +69,7 @@ function Provider({ children }) {
       if (meals === null) {
         return global.alert(stringErro);
       }
-      return setRecipesMeals(data);
+      return setRecipesMeals(meals);
     }
     default: {
       return null;
@@ -87,7 +87,7 @@ function Provider({ children }) {
       if (drinks === null) {
         return global.alert(stringErro);
       }
-      return setRecipesDrinks(data);
+      return setRecipesDrinks(drinks);
     }
     case 'name': {
       const endpoint = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${valorDeBusca}`;
@@ -97,7 +97,7 @@ function Provider({ children }) {
       if (drinks === null) {
         return global.alert(stringErro);
       }
-      return setRecipesDrinks(data);
+      return setRecipesDrinks(drinks);
     }
     case 'firstletter': {
       if (valorDeBusca.length !== 1) {
@@ -110,7 +110,7 @@ function Provider({ children }) {
       if (drinks === null) {
         return global.alert(stringErro);
       }
-      return setRecipesDrinks(data);
+      return setRecipesDrinks(drinks);
     }
     default: {
       return null;
@@ -127,6 +127,8 @@ function Provider({ children }) {
     saveEmail,
     buscarAPIReceitasMeals,
     buscarAPIReceitasDrinks,
+    recipesMeals,
+    recipesDrinks,
   }), [email, password, isDisable, recipesMeals, recipesDrinks]);
 
   return (
