@@ -6,6 +6,9 @@ function Provider({ children }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isDisable, setDisable] = useState(true);
+  const [recipesMeals, setRecipesMeals] = useState([]);
+  const [recipesDrinks, setRecipesDrinks] = useState([]);
+  const stringErro = 'Sorry, we haven\'t found any recipes for these filters.';
 
   const handleDisable = () => {
     const regex = /\S+@\S+\.\S+/;
@@ -33,6 +36,88 @@ function Provider({ children }) {
     localStorage.setItem('user', JSON.stringify(userEmail));
   };
 
+  const buscarAPIReceitasMeals = async (tipoDeBusca, valorDeBusca) => {
+    switch (tipoDeBusca) {
+    case 'ingredient': {
+      const endpoint = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${valorDeBusca}`;
+      const response = await fetch(endpoint);
+      if (response.json.length === 0) {
+        global.alert(stringErro);
+      }
+      const data = await response.json();
+      console.log(data);
+      return setRecipesMeals(data);
+    }
+    case 'name': {
+      const endpoint = `https://www.themealdb.com/api/json/v1/1/search.php?s=${valorDeBusca}`;
+      const response = await fetch(endpoint);
+      if (response.json.length === 0) {
+        global.alert(stringErro);
+      }
+      const data = await response.json();
+      console.log(data);
+      return setRecipesMeals(data);
+    }
+    case 'firstletter': {
+      if (valorDeBusca.length !== 1) {
+        return global.alert('Your search must have only 1 (one) character');
+      }
+      const endpoint = `https://www.themealdb.com/api/json/v1/1/search.php?f=${valorDeBusca}`;
+      const response = await fetch(endpoint);
+      if (response.json.length === 0) {
+        global.alert(stringErro);
+      }
+      const data = await response.json();
+      console.log(data);
+      return setRecipesMeals(data);
+    }
+    default: {
+      return null;
+    }
+    }
+  };
+
+  const buscarAPIReceitasDrinks = async (tipoDeBusca, valorDeBusca) => {
+    switch (tipoDeBusca) {
+    case 'ingredient': {
+      const endpoint = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${valorDeBusca}`;
+      const response = await fetch(endpoint);
+      if (response.json.length === 0) {
+        global.alert(stringErro);
+      }
+      const data = await response.json();
+      console.log(data);
+      return setRecipesDrinks(data);
+    }
+    case 'name': {
+      const endpoint = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${valorDeBusca}`;
+      const response = await fetch(endpoint);
+      if (response.json.length === 0) {
+        global.alert(stringErro);
+      }
+      const data = await response.json();
+      console.log(data);
+      return setRecipesDrinks(data);
+    }
+    case 'firstletter': {
+      if (valorDeBusca.length !== 1) {
+        return global.alert('Your search must have only 1 (one) character');
+      }
+      const endpoint = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${valorDeBusca}`;
+      const response = await fetch(endpoint);
+      if (response.json.length === 0) {
+        global.alert(stringErro);
+      }
+      const data = await response.json();
+      console.log(data);
+      return setRecipesDrinks(data);
+    }
+    default: {
+      return null;
+    }
+    }
+  };
+
   const contexto = useMemo(() => ({
     email,
     handleInpuEmail,
@@ -40,7 +125,9 @@ function Provider({ children }) {
     handleInputPassword,
     isDisable,
     saveEmail,
-  }), [email, password, isDisable]);
+    buscarAPIReceitasMeals,
+    buscarAPIReceitasDrinks,
+  }), [email, password, isDisable, recipesMeals, recipesDrinks]);
 
   return (
     <AppContext.Provider value={ contexto }>

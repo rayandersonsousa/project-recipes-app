@@ -35,7 +35,7 @@ function Header(props) {
           ) : null
       }
       {
-        searchBar && <SearchBar />
+        searchBar && <SearchBar pagina={ titulo } />
       }
       <button type="button" src={ profileIcon } onClick={ paginaDePerfil }>
         <img src={ profileIcon } alt="profileIcon" data-testid="profile-top-btn" />
