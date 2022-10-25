@@ -41,21 +41,21 @@ function Provider({ children }) {
     case 'ingredient': {
       const endpoint = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${valorDeBusca}`;
       const response = await fetch(endpoint);
-      if (response.json.length === 0) {
-        global.alert(stringErro);
-      }
       const data = await response.json();
-      console.log(data);
+      const { meals } = data;
+      if (meals === null) {
+        return global.alert(stringErro);
+      }
       return setRecipesMeals(data);
     }
     case 'name': {
       const endpoint = `https://www.themealdb.com/api/json/v1/1/search.php?s=${valorDeBusca}`;
       const response = await fetch(endpoint);
-      if (response.json.length === 0) {
-        global.alert(stringErro);
-      }
       const data = await response.json();
-      console.log(data);
+      const { meals } = data;
+      if (meals === null) {
+        return global.alert(stringErro);
+      }
       return setRecipesMeals(data);
     }
     case 'firstletter': {
@@ -64,11 +64,11 @@ function Provider({ children }) {
       }
       const endpoint = `https://www.themealdb.com/api/json/v1/1/search.php?f=${valorDeBusca}`;
       const response = await fetch(endpoint);
-      if (response.json.length === 0) {
-        global.alert(stringErro);
-      }
       const data = await response.json();
-      console.log(data);
+      const { meals } = data;
+      if (meals === null) {
+        return global.alert(stringErro);
+      }
       return setRecipesMeals(data);
     }
     default: {
@@ -82,21 +82,21 @@ function Provider({ children }) {
     case 'ingredient': {
       const endpoint = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${valorDeBusca}`;
       const response = await fetch(endpoint);
-      if (response.json.length === 0) {
-        global.alert(stringErro);
-      }
       const data = await response.json();
-      console.log(data);
+      const { drinks } = data;
+      if (drinks === null) {
+        return global.alert(stringErro);
+      }
       return setRecipesDrinks(data);
     }
     case 'name': {
       const endpoint = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${valorDeBusca}`;
       const response = await fetch(endpoint);
-      if (response.json.length === 0) {
-        global.alert(stringErro);
-      }
       const data = await response.json();
-      console.log(data);
+      const { drinks } = data;
+      if (drinks === null) {
+        return global.alert(stringErro);
+      }
       return setRecipesDrinks(data);
     }
     case 'firstletter': {
@@ -105,11 +105,11 @@ function Provider({ children }) {
       }
       const endpoint = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${valorDeBusca}`;
       const response = await fetch(endpoint);
-      if (response.json.length === 0) {
-        global.alert(stringErro);
-      }
       const data = await response.json();
-      console.log(data);
+      const { drinks } = data;
+      if (drinks === null) {
+        return global.alert(stringErro);
+      }
       return setRecipesDrinks(data);
     }
     default: {

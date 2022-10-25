@@ -3,7 +3,8 @@ import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
 
 function SearchBar(props) {
-  const { buscarAPIReceitasMeals, buscarAPIReceitasDrinks } = useContext(AppContext);
+  const { buscarAPIReceitasMeals,
+    buscarAPIReceitasDrinks, recipesMeals, recipesDrinks } = useContext(AppContext);
   const [radioDeBusca, setRadioDeBusca] = useState('');
   const [valorDaBusca, setValorDaBusca] = useState('');
   const { pagina } = props;
@@ -14,7 +15,7 @@ function SearchBar(props) {
 
   const valorParaBuscar = ({ target }) => {
     setValorDaBusca(target.value);
-    console.log(pagina);
+    console.log(recipesMeals, recipesDrinks);
   };
 
   const qualTipoDeReceitaBuscar = () => {
