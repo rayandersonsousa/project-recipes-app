@@ -21,6 +21,9 @@ function Header(props) {
   return (
     <header>
       <h1 data-testid="page-title">{titulo}</h1>
+      <button type="button" src={ profileIcon } onClick={ paginaDePerfil }>
+        <img src={ profileIcon } alt="profileIcon" data-testid="profile-top-btn" />
+      </button>
       {
         pesquisa === 'true'
           ? (
@@ -37,9 +40,6 @@ function Header(props) {
       {
         searchBar && <SearchBar pagina={ titulo } />
       }
-      <button type="button" src={ profileIcon } onClick={ paginaDePerfil }>
-        <img src={ profileIcon } alt="profileIcon" data-testid="profile-top-btn" />
-      </button>
     </header>
   );
 }

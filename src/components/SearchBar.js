@@ -47,7 +47,6 @@ function SearchBar(props) {
       } else {
         setReceitasBuscadas(recipesMeals);
       }
-      console.log(receitasBuscadas);
     }
     if (pagina === 'Drinks') {
       setImagemReceita('strDrinkThumb');
@@ -60,7 +59,6 @@ function SearchBar(props) {
       } else {
         setReceitasBuscadas(recipesDrinks);
       }
-      console.log(receitasBuscadas);
     }
   };
 
