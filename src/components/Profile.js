@@ -1,11 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import Footer from './Footer';
 import Header from './Header';
 
 function Profile() {
   const storage = JSON.parse(localStorage.getItem('user'));
-  // const emailStorage = storage.email;
-  console.log('log', storage);
   const history = useHistory();
 
   const handleClickDone = () => {
@@ -54,6 +53,10 @@ function Profile() {
         Logout
 
       </button>
+
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 }
