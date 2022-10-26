@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Header from './Header';
+import Footer from './Footer';
 
 function Profile() {
   const storage = JSON.parse(localStorage.getItem('user'));
@@ -26,7 +27,7 @@ function Profile() {
       <Header titulo="Profile" pesquisa="false" />
 
       <h1>Profile</h1>
-
+      
       <h2 data-testid="profile-email">{emailStorage}</h2>
 
       <button
@@ -53,6 +54,11 @@ function Profile() {
         Logout
 
       </button>
+
+      <footer>
+        <Footer />
+      </footer>
+
     </div>
   );
 }
