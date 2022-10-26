@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { act, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
@@ -9,6 +9,9 @@ describe('Testes para a ScrollBar', () => {
   const tituloPagina = 'page-title';
   const searchIcon = 'searchIcon';
   const profileIcon = 'profileIcon';
+  const stringIngredientRadio = 'ingredient-search-radio';
+  const stringNameRadio = 'name-search-radio';
+  const stringLetterRadio = 'first-letter-search-radio';
   it('Testa se a barra funciona corretamente na Página de Meals', async () => {
     const { history } = renderWithRouter(
       <Provider>
@@ -28,12 +31,12 @@ describe('Testes para a ScrollBar', () => {
     const searchBar = screen.getByRole('textbox');
     expect(searchBar).toBeInTheDocument();
     userEvent.type(searchBar, 'chicken');
-    const ingredientRadio = screen.getByTestId('ingredient-search-radio');
+    const ingredientRadio = screen.getByTestId(stringIngredientRadio);
     expect(ingredientRadio).toBeInTheDocument();
-    const nameRadio = screen.getByTestId('name-search-radio');
+    const nameRadio = screen.getByTestId(stringNameRadio);
     userEvent.click(ingredientRadio);
     expect(nameRadio).toBeInTheDocument();
-    const letterRadio = screen.getByTestId('first-letter-search-radio');
+    const letterRadio = screen.getByTestId(stringLetterRadio);
     expect(letterRadio).toBeInTheDocument();
     const botaoDeBuscar = screen.getAllByRole('button');
     expect(botaoDeBuscar[2]).toBeInTheDocument();
@@ -61,12 +64,12 @@ describe('Testes para a ScrollBar', () => {
     const searchBar = screen.getByRole('textbox');
     expect(searchBar).toBeInTheDocument();
     userEvent.type(searchBar, 'vodka');
-    const ingredientRadio = screen.getByTestId('ingredient-search-radio');
+    const ingredientRadio = screen.getByTestId(stringIngredientRadio);
     expect(ingredientRadio).toBeInTheDocument();
-    const nameRadio = screen.getByTestId('name-search-radio');
+    const nameRadio = screen.getByTestId(stringNameRadio);
     expect(nameRadio).toBeInTheDocument();
     userEvent.click(nameRadio);
-    const letterRadio = screen.getByTestId('first-letter-search-radio');
+    const letterRadio = screen.getByTestId(stringLetterRadio);
     expect(letterRadio).toBeInTheDocument();
     const botaoDeBuscar = screen.getAllByRole('button');
     expect(botaoDeBuscar[2]).toBeInTheDocument();
@@ -94,9 +97,9 @@ describe('Testes para a ScrollBar', () => {
     const searchBar = screen.getByRole('textbox');
     expect(searchBar).toBeInTheDocument();
     userEvent.type(searchBar, 'Aquamarine');
-    const ingredientRadio = screen.getByTestId('ingredient-search-radio');
+    const ingredientRadio = screen.getByTestId(stringIngredientRadio);
     expect(ingredientRadio).toBeInTheDocument();
-    const nameRadio = screen.getByTestId('name-search-radio');
+    const nameRadio = screen.getByTestId(stringNameRadio);
     expect(nameRadio).toBeInTheDocument();
     userEvent.click(nameRadio);
     const botaoDeBuscar = screen.getAllByRole('button');
@@ -124,9 +127,9 @@ describe('Testes para a ScrollBar', () => {
     const searchBar = screen.getByRole('textbox');
     expect(searchBar).toBeInTheDocument();
     userEvent.type(searchBar, 'Arrabiata');
-    const ingredientRadio = screen.getByTestId('ingredient-search-radio');
+    const ingredientRadio = screen.getByTestId(stringIngredientRadio);
     expect(ingredientRadio).toBeInTheDocument();
-    const nameRadio = screen.getByTestId('name-search-radio');
+    const nameRadio = screen.getByTestId(stringNameRadio);
     expect(nameRadio).toBeInTheDocument();
     userEvent.click(nameRadio);
     const botaoDeBuscar = screen.getAllByRole('button');
@@ -154,12 +157,12 @@ describe('Testes para a ScrollBar', () => {
     const searchBar = screen.getByRole('textbox');
     expect(searchBar).toBeInTheDocument();
     userEvent.type(searchBar, 'water');
-    const ingredientRadio = screen.getByTestId('ingredient-search-radio');
+    const ingredientRadio = screen.getByTestId(stringIngredientRadio);
     expect(ingredientRadio).toBeInTheDocument();
-    const nameRadio = screen.getByTestId('name-search-radio');
+    const nameRadio = screen.getByTestId(stringNameRadio);
     userEvent.click(ingredientRadio);
     expect(nameRadio).toBeInTheDocument();
-    const letterRadio = screen.getByTestId('first-letter-search-radio');
+    const letterRadio = screen.getByTestId(stringLetterRadio);
     expect(letterRadio).toBeInTheDocument();
     const botaoDeBuscar = screen.getAllByRole('button');
     expect(botaoDeBuscar[2]).toBeInTheDocument();
