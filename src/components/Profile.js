@@ -27,7 +27,6 @@ function Profile() {
       <Header titulo="Profile" pesquisa="false" />
 
       <h1>Profile</h1>
-      
       <h2 data-testid="profile-email">{emailStorage}</h2>
 
       <button
