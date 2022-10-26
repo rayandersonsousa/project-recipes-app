@@ -1,12 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Header from './Header';
-import Footer from './Footer';
 
 function Profile() {
   const storage = JSON.parse(localStorage.getItem('user'));
-  const emailStorage = storage.email;
-  console.log('log', emailStorage);
+  // const emailStorage = storage.email;
+  console.log('log', storage);
   const history = useHistory();
 
   const handleClickDone = () => {
@@ -26,8 +25,10 @@ function Profile() {
     <div>
       <Header titulo="Profile" pesquisa="false" />
 
-      <h1>Profile</h1>
-      <h2 data-testid="profile-email">{emailStorage}</h2>
+      {
+        (storage !== null)
+        && <h2 data-testid="profile-email">{storage.email}</h2>
+      }
 
       <button
         type="button"
@@ -53,11 +54,6 @@ function Profile() {
         Logout
 
       </button>
-
-      <footer>
-        <Footer />
-      </footer>
-
     </div>
   );
 }
