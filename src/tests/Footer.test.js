@@ -6,12 +6,25 @@ import Provider from '../context/Provider';
 import renderWithRouter from './helpers/helpers';
 
 describe('Testes para o Footer', () => {
+  const emailString = 'email-input';
+  const senhaString = 'password-input';
+  const emailDoUsuario = 'teste@teste.com';
+
   it('Testa se os botões são renderizados no footer', () => {
     const { history } = renderWithRouter(
       <Provider>
         <App />
       </Provider>,
     );
+    const emailInput = screen.getByTestId(emailString);
+    const passInput = screen.getByTestId(senhaString);
+    const loginBtn = screen.getByRole('button', {
+      name: /enter/i,
+    });
+
+    userEvent.type(emailInput, emailDoUsuario);
+    userEvent.type(passInput, '1234567');
+    userEvent.click(loginBtn);
 
     act(() => {
       history.push('/profile');
@@ -35,6 +48,16 @@ describe('Testes para o Footer', () => {
       </Provider>,
     );
 
+    const emailInput = screen.getByTestId(emailString);
+    const passInput = screen.getByTestId(senhaString);
+    const loginBtn = screen.getByRole('button', {
+      name: /enter/i,
+    });
+
+    userEvent.type(emailInput, emailDoUsuario);
+    userEvent.type(passInput, '1236549');
+    userEvent.click(loginBtn);
+
     act(() => {
       history.push('/profile');
     });
@@ -54,6 +77,15 @@ describe('Testes para o Footer', () => {
         <App />
       </Provider>,
     );
+    const emailInput = screen.getByTestId(emailString);
+    const passInput = screen.getByTestId(senhaString);
+    const loginBtn = screen.getByRole('button', {
+      name: /enter/i,
+    });
+
+    userEvent.type(emailInput, emailDoUsuario);
+    userEvent.type(passInput, '1234567');
+    userEvent.click(loginBtn);
 
     act(() => {
       history.push('/profile');
