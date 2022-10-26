@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
+import SearchBar from './SearchBar';
 
 function Header(props) {
   const { titulo, pesquisa } = props;
@@ -20,6 +21,9 @@ function Header(props) {
   return (
     <header>
       <h1 data-testid="page-title">{titulo}</h1>
+      <button type="button" src={ profileIcon } onClick={ paginaDePerfil }>
+        <img src={ profileIcon } alt="profileIcon" data-testid="profile-top-btn" />
+      </button>
       {
         pesquisa === 'true'
           ? (
@@ -34,11 +38,8 @@ function Header(props) {
           ) : null
       }
       {
-        searchBar && <input type="text" data-testid="search-input" />
+        searchBar && <SearchBar pagina={ titulo } />
       }
-      <button type="button" src={ profileIcon } onClick={ paginaDePerfil }>
-        <img src={ profileIcon } alt="profileIcon" data-testid="profile-top-btn" />
-      </button>
     </header>
   );
 }
