@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import Recipes from './Recipes';
 
 function Meals() {
   return (
@@ -8,7 +9,7 @@ function Meals() {
       <header>
         <Header titulo="Meals" pesquisa="true" />
       </header>
-      <h1>Meals</h1>
+      <Recipes pagina="Meals" />
       <footer>
         <Footer />
       </footer>

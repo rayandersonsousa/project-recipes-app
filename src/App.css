@@ -70,3 +70,8 @@
 img {
   width: 50px;
 }
+
+.receitasContainer {
+  display: flex;
+  justify-content: space-between;
+}

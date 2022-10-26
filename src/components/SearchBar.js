@@ -125,7 +125,7 @@ function SearchBar(props) {
       >
         Search
       </button>
-      <div>
+      <div className="receitasContainer">
         {
           receitasBuscadas && receitasBuscadas.map((cadaReceita, index) => (
             <CardFood
