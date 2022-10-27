@@ -38,7 +38,7 @@ function Header(props) {
           ) : null
       }
       {
-        searchBar && <SearchBar pagina={ titulo } />
+        searchBar && <SearchBar pagina={ titulo.toLowerCase() } />
       }
     </header>
   );

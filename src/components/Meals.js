@@ -6,7 +6,7 @@ import Recipes from './Recipes';
 function Meals() {
   return (
     <div>
-      <Header titulo="meals" pesquisa="true" />
+      <Header titulo="Meals" pesquisa="true" />
       <Recipes pagina="meals" />
       <footer>
         <Footer />

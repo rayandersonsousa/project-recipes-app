@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import AppContext from '../context/AppContext';
-// import CardFood from './cardFood';
 
 function SearchBar(props) {
   const { buscarAPIReceitasMeals,

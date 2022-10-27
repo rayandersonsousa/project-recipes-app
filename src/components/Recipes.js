@@ -10,7 +10,9 @@ function Recipes(props) {
   const [nomeReceita, setNomeReceita] = useState('');
   const [idReceita, setIdReceita] = useState('');
   const [category, setCategory] = useState([]);
-  // const [choosenCategory, setChoosenCategory] = useState('All');
+  const [radioFiltroOption,
+    setRadioFiltroOption] = useState('All');
+  const [allCategoryChecked, setAllCategoryChecked] = useState(true);
   const { pagina } = props;
 
   useEffect(() => {
@@ -54,9 +56,16 @@ function Recipes(props) {
   }, []);
 
   const filtrarPorBotão = async ({ target }) => {
-    const categoriaEscolhida = target.value;
+    let categoriaEscolhida = target.value;
     const doze = 12;
     if (pagina === 'meals') {
+      if (categoriaEscolhida === radioFiltroOption) {
+        setAllCategoryChecked(true);
+        categoriaEscolhida = 'All';
+      } else if (categoriaEscolhida !== radioFiltroOption) {
+        setAllCategoryChecked(false);
+        setRadioFiltroOption(categoriaEscolhida);
+      }
       if (categoriaEscolhida === 'All') {
         const endpoint = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
         const response = await fetch(endpoint);
@@ -73,6 +82,13 @@ function Recipes(props) {
       return setReceitasIniciais(dozeReceitas);
     }
     if (pagina === 'drinks') {
+      if (categoriaEscolhida === radioFiltroOption) {
+        setAllCategoryChecked(true);
+        categoriaEscolhida = 'All';
+      } else if (categoriaEscolhida !== radioFiltroOption) {
+        setAllCategoryChecked(false);
+        setRadioFiltroOption(categoriaEscolhida);
+      }
       if (categoriaEscolhida === 'All') {
         const endpoint = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
         const response = await fetch(endpoint);
@@ -101,6 +117,7 @@ function Recipes(props) {
             index={ index }
             name={ cadaReceita[nomeReceita] }
             img={ cadaReceita[imagemReceita] }
+            id={ cadaReceita[idReceita] }
           />
         ))
       }
@@ -111,7 +128,7 @@ function Recipes(props) {
       {
         receitasIniciais && receitasIniciais.map((cadaReceita, index) => (
           <CardFood
-            key={ index }
+            key={ [index, cadaReceita] }
             pagina={ pagina }
             index={ index }
             name={ cadaReceita[nomeReceita] }
@@ -131,6 +148,7 @@ function Recipes(props) {
           data-testid="All-category-filter"
           value="All"
           name="categories"
+          checked={ allCategoryChecked }
           onClick={ filtrarPorBotão }
         />
       </label>
