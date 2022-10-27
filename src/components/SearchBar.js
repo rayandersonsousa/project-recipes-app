@@ -2,16 +2,22 @@ import PropTypes from 'prop-types';
 import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import AppContext from '../context/AppContext';
-import CardFood from './cardFood';
+// import CardFood from './cardFood';
 
 function SearchBar(props) {
   const { buscarAPIReceitasMeals,
-    buscarAPIReceitasDrinks, recipesMeals, recipesDrinks } = useContext(AppContext);
+    buscarAPIReceitasDrinks, recipesMeals, recipesDrinks,
+    // receitasBuscadas,
+    setReceitasBuscadas,
+    // imagemReceita,
+    setImagemReceita,
+    // nomeReceita,
+    setNomeReceita,
+    // idReceita,
+    // setIdReceita,
+  } = useContext(AppContext);
   const [radioDeBusca, setRadioDeBusca] = useState('');
   const [valorDaBusca, setValorDaBusca] = useState('');
-  const [receitasBuscadas, setReceitasBuscadas] = useState([]);
-  const [imagemReceita, setImagemReceita] = useState('');
-  const [nomeReceita, setNomeReceita] = useState('');
   // const [idReceita, setIdReceita] = useState('');
   const { pagina } = props;
   const history = useHistory();
@@ -39,48 +45,21 @@ function SearchBar(props) {
     if (pagina === 'Meals') {
       setImagemReceita('strMealThumb');
       setNomeReceita('strMeal');
-      // setIdReceita('idMeal');
-      const doze = 12;
-      if (recipesMeals.length > doze) {
-        const dozeReceitas = recipesMeals.slice(0, doze);
-        setReceitasBuscadas(dozeReceitas);
-      } else {
-        setReceitasBuscadas(recipesMeals);
-      }
     }
     if (pagina === 'Drinks') {
       setImagemReceita('strDrinkThumb');
       setNomeReceita('strDrink');
-      // setIdReceita('idDrink');
-      const doze = 12;
-      if (recipesDrinks.length > doze) {
-        const dozeReceitas = recipesDrinks.slice(0, doze);
-        setReceitasBuscadas(dozeReceitas);
-      } else {
-        setReceitasBuscadas(recipesDrinks);
-      }
     }
   };
 
   const qualTipoDeReceitaBuscar = async () => {
     if (pagina === 'Meals') {
       await buscarAPIReceitasMeals(radioDeBusca, valorDaBusca);
-      return setReceitasBuscadas(recipesMeals);
     }
     if (pagina === 'Drinks') {
       await buscarAPIReceitasDrinks(radioDeBusca, valorDaBusca);
-      return setReceitasBuscadas(recipesDrinks);
     }
   };
-
-  // const mostrarDetalhes = (id) => {
-  //   if (pagina === 'Meals') {
-  //     return history.push(`/meals/${id}`);
-  //   }
-  //   if (pagina === 'Drinks') {
-  //     return history.push(`/drinks/${id}`);
-  //   }
-  // };
 
   useEffect(verificarQuantidade, [qualTipoDeReceitaBuscar]);
   useEffect(salvarPorQuantidade, [recipesMeals, recipesDrinks]);
@@ -125,18 +104,6 @@ function SearchBar(props) {
       >
         Search
       </button>
-      <div className="receitasContainer">
-        {
-          receitasBuscadas && receitasBuscadas.map((cadaReceita, index) => (
-            <CardFood
-              key={ index }
-              index={ index }
-              name={ cadaReceita[nomeReceita] }
-              img={ cadaReceita[imagemReceita] }
-            />
-          ))
-        }
-      </div>
     </div>
   );
 }

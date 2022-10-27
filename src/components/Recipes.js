@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
-import CardFood from './cardFood';
+import React, { useState, useEffect, useContext } from 'react';
+import CardFood from './CardFood';
+import AppContext from '../context/AppContext';
 
 function Recipes(props) {
+  const { receitasBuscadas } = useContext(AppContext);
   const [receitasIniciais, setReceitasIniciais] = useState([]);
   const [imagemReceita, setImagemReceita] = useState('');
   const [nomeReceita, setNomeReceita] = useState('');
@@ -33,12 +35,12 @@ function Recipes(props) {
       }
     }
     buscarReceitasIniciais();
-  }, [pagina]);
+  }, []);
 
-  return (
+  const receitasProcuradas = (
     <div className="receitasContainer">
       {
-        receitasIniciais && receitasIniciais.map((cadaReceita, index) => (
+        receitasBuscadas.map((cadaReceita, index) => (
           <CardFood
             key={ index }
             index={ index }
@@ -46,6 +48,30 @@ function Recipes(props) {
             img={ cadaReceita[imagemReceita] }
           />
         ))
+      }
+    </div>);
+
+  const receitasSemBusca = (
+    <div className="receitasContainer">
+      {
+        receitasIniciais && receitasIniciais.map((cadaReceita, index) => (
+          <CardFood
+            key={ [cadaReceita, index] }
+            index={ index }
+            name={ cadaReceita[nomeReceita] }
+            img={ cadaReceita[imagemReceita] }
+          />
+        ))
+      }
+    </div>);
+
+  return (
+    <div className="receitasContainer">
+      {
+        console.log(receitasBuscadas)
+      }
+      {
+        receitasBuscadas.length !== 0 ? receitasProcuradas : receitasSemBusca
       }
     </div>
   );

@@ -23,22 +23,22 @@ function Footer() {
       data-testid="footer"
       style={ styleDiv }
     >
-      <buttton
+      <button
         type="button"
         data-testid="drinks-bottom-btn"
         src={ drinkIcon }
         onClick={ drinkPage }
       >
         <img src={ drinkIcon } alt="drinkIcon" />
-      </buttton>
-      <buttton
+      </button>
+      <button
         type="button"
         data-testid="meals-bottom-btn"
         src={ mealIcon }
         onClick={ mealPage }
       >
         <img src={ mealIcon } alt="mealIcon" />
-      </buttton>
+      </button>
     </div>
   );
 }
