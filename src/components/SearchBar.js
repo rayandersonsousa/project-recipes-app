@@ -7,17 +7,11 @@ import AppContext from '../context/AppContext';
 function SearchBar(props) {
   const { buscarAPIReceitasMeals,
     buscarAPIReceitasDrinks, recipesMeals, recipesDrinks,
-    // receitasBuscadas,
-    // imagemReceita,
     setImagemReceita,
-    // nomeReceita,
     setNomeReceita,
-    // idReceita,
-    // setIdReceita,
   } = useContext(AppContext);
   const [radioDeBusca, setRadioDeBusca] = useState('');
   const [valorDaBusca, setValorDaBusca] = useState('');
-  // const [idReceita, setIdReceita] = useState('');
   const { pagina } = props;
   const history = useHistory();
 
@@ -58,6 +52,8 @@ function SearchBar(props) {
     if (pagina === 'drinks') {
       await buscarAPIReceitasDrinks(radioDeBusca, valorDaBusca);
     }
+    console.log('nao ta indo');
+    console.log(pagina);
   };
 
   useEffect(verificarQuantidade, [qualTipoDeReceitaBuscar]);
@@ -99,7 +95,7 @@ function SearchBar(props) {
       <button
         type="button"
         data-testid="exec-search-btn"
-        onClick={ () => qualTipoDeReceitaBuscar() }
+        onClick={ qualTipoDeReceitaBuscar }
       >
         Search
       </button>

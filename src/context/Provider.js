@@ -62,6 +62,7 @@ function Provider({ children }) {
       if (meals === null) {
         return global.alert(stringErro);
       }
+      console.log(meals);
       return setRecipesMeals(verificarTamanho(meals));
     }
     case 'name': {
