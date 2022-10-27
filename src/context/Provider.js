@@ -12,6 +12,7 @@ function Provider({ children }) {
   const [imagemReceita, setImagemReceita] = useState('');
   const [nomeReceita, setNomeReceita] = useState('');
   const [idReceita, setIdReceita] = useState('');
+  const [recipesDetails, setRecipesDetails] = useState([]);
   const stringErro = 'Sorry, we haven\'t found any recipes for these filters.';
 
   const handleDisable = () => {
@@ -154,6 +155,8 @@ function Provider({ children }) {
     setNomeReceita,
     idReceita,
     setIdReceita,
+    recipesDetails,
+    setRecipesDetails,
   }), [email, password, isDisable, recipesMeals, recipesDrinks]);
 
   return (
