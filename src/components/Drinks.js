@@ -1,12 +1,13 @@
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import Recipes from './Recipes';
 
 function Drinks() {
   return (
     <div>
       <Header titulo="Drinks" pesquisa="true" />
-      <h1>Drinks</h1>
+      <Recipes pagina="drinks" />
       <footer>
         <Footer />
       </footer>

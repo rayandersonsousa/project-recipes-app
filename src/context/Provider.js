@@ -8,6 +8,10 @@ function Provider({ children }) {
   const [isDisable, setDisable] = useState(true);
   const [recipesMeals, setRecipesMeals] = useState([]);
   const [recipesDrinks, setRecipesDrinks] = useState([]);
+  const [receitasBuscadas, setReceitasBuscadas] = useState([]);
+  const [imagemReceita, setImagemReceita] = useState('');
+  const [nomeReceita, setNomeReceita] = useState('');
+  const [idReceita, setIdReceita] = useState('');
   const stringErro = 'Sorry, we haven\'t found any recipes for these filters.';
 
   const handleDisable = () => {
@@ -36,6 +40,18 @@ function Provider({ children }) {
     localStorage.setItem('user', JSON.stringify(userEmail));
   };
 
+  const verificarTamanho = (array) => {
+    const doze = 12;
+    console.log(array);
+    if (array.length > doze) {
+      const dozeReceitas = array.slice(0, doze);
+      setReceitasBuscadas(dozeReceitas);
+      return dozeReceitas;
+    }
+    setReceitasBuscadas(array);
+    return array;
+  };
+
   const buscarAPIReceitasMeals = async (tipoDeBusca, valorDeBusca) => {
     switch (tipoDeBusca) {
     case 'ingredient': {
@@ -46,7 +62,8 @@ function Provider({ children }) {
       if (meals === null) {
         return global.alert(stringErro);
       }
-      return setRecipesMeals(meals);
+      console.log(meals);
+      return setRecipesMeals(verificarTamanho(meals));
     }
     case 'name': {
       const endpoint = `https://www.themealdb.com/api/json/v1/1/search.php?s=${valorDeBusca}`;
@@ -56,7 +73,7 @@ function Provider({ children }) {
       if (meals === null) {
         return global.alert(stringErro);
       }
-      return setRecipesMeals(meals);
+      return setRecipesMeals(verificarTamanho(meals));
     }
     case 'firstletter': {
       if (valorDeBusca.length !== 1) {
@@ -69,7 +86,7 @@ function Provider({ children }) {
       if (meals === null) {
         return global.alert(stringErro);
       }
-      return setRecipesMeals(meals);
+      return setRecipesMeals(verificarTamanho(meals));
     }
     default: {
       return null;
@@ -87,7 +104,7 @@ function Provider({ children }) {
       if (drinks === null) {
         return global.alert(stringErro);
       }
-      return setRecipesDrinks(drinks);
+      return setRecipesDrinks(verificarTamanho(drinks));
     }
     case 'name': {
       const endpoint = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${valorDeBusca}`;
@@ -97,7 +114,7 @@ function Provider({ children }) {
       if (drinks === null) {
         return global.alert(stringErro);
       }
-      return setRecipesDrinks(drinks);
+      return setRecipesDrinks(verificarTamanho(drinks));
     }
     case 'firstletter': {
       if (valorDeBusca.length !== 1) {
@@ -110,7 +127,7 @@ function Provider({ children }) {
       if (drinks === null) {
         return global.alert(stringErro);
       }
-      return setRecipesDrinks(drinks);
+      return setRecipesDrinks(verificarTamanho(drinks));
     }
     default: {
       return null;
@@ -129,6 +146,14 @@ function Provider({ children }) {
     buscarAPIReceitasDrinks,
     recipesMeals,
     recipesDrinks,
+    receitasBuscadas,
+    setReceitasBuscadas,
+    imagemReceita,
+    setImagemReceita,
+    nomeReceita,
+    setNomeReceita,
+    idReceita,
+    setIdReceita,
   }), [email, password, isDisable, recipesMeals, recipesDrinks]);
 
   return (
