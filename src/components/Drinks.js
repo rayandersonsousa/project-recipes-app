@@ -7,7 +7,7 @@ function Drinks() {
   return (
     <div>
       <Header titulo="Drinks" pesquisa="true" />
-      <Recipes pagina="Drinks" />
+      <Recipes pagina="drinks" />
       <footer>
         <Footer />
       </footer>

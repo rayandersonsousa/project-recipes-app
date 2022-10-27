@@ -8,7 +8,6 @@ function SearchBar(props) {
   const { buscarAPIReceitasMeals,
     buscarAPIReceitasDrinks, recipesMeals, recipesDrinks,
     // receitasBuscadas,
-    setReceitasBuscadas,
     // imagemReceita,
     setImagemReceita,
     // nomeReceita,
@@ -32,31 +31,31 @@ function SearchBar(props) {
 
   const verificarQuantidade = () => {
     if (recipesMeals.length === 1 || recipesDrinks.length === 1) {
-      if (pagina === 'Meals') {
+      if (pagina === 'meals') {
         history.push(`/meals/${recipesMeals[0].idMeal}`);
       }
-      if (pagina === 'Drinks') {
+      if (pagina === 'drinks') {
         history.push(`/drinks/${recipesDrinks[0].idDrink}`);
       }
     }
   };
 
   const salvarPorQuantidade = () => {
-    if (pagina === 'Meals') {
+    if (pagina === 'meals') {
       setImagemReceita('strMealThumb');
       setNomeReceita('strMeal');
     }
-    if (pagina === 'Drinks') {
+    if (pagina === 'drinks') {
       setImagemReceita('strDrinkThumb');
       setNomeReceita('strDrink');
     }
   };
 
   const qualTipoDeReceitaBuscar = async () => {
-    if (pagina === 'Meals') {
+    if (pagina === 'meals') {
       await buscarAPIReceitasMeals(radioDeBusca, valorDaBusca);
     }
-    if (pagina === 'Drinks') {
+    if (pagina === 'drinks') {
       await buscarAPIReceitasDrinks(radioDeBusca, valorDaBusca);
     }
   };

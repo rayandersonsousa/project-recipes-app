@@ -1,13 +1,19 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function CardFood(props) {
-  const { index, img, name } = props;
+  const { index, img, name, pagina, id } = props;
   return (
-    <section data-testid={ `${index}-recipe-card` } className="cardFood">
+    <Link
+      to={ `/${pagina}/${id}` }
+      key={ index }
+      className="cardFood"
+      data-testid={ `${index}-recipe-card` }
+    >
       <img src={ img } alt={ name } data-testid={ `${index}-card-img` } />
       <p data-testid={ `${index}-card-name` }>{name}</p>
-    </section>
+    </Link>
   );
 }
 
