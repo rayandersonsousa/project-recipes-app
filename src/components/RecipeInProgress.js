@@ -8,6 +8,7 @@ function RecipeInProgress(props) {
   const idPag = infosPag[2];
 
   const [receita, setReceita] = useState([]);
+  const [ingredientes, setIngredientes] = useState([]);
   const [categoriaComida, setCategoriaComida] = useState('');
   const [alcoolica, setAlcoolica] = useState('');
   const [paginaAtual, setPaginaAtual] = useState('');
@@ -32,7 +33,6 @@ function RecipeInProgress(props) {
         const endpoint = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
         const response = await fetch(endpoint);
         const data = await response.json();
-        console.log(data);
         const { drinks } = data;
         setAlcoolica(drinks[0].strAlcoholic);
         setCategoriaComida(drinks[0].strCategory);
@@ -45,6 +45,16 @@ function RecipeInProgress(props) {
     buscarDados(paginaLocal, idPag);
   }, [paginaLocal, idPag]);
 
+  console.log(receita);
+  useEffect(() => {
+    const resultadoDaReceita = Object.entries(receita);
+    const arrayIngredientes = resultadoDaReceita
+      .filter((cadaChave) => cadaChave[0].includes('ngredient') && cadaChave[1]);
+    const arrayIngredientesFiltrados = arrayIngredientes
+      .map((cadaIng) => cadaIng[1]);
+    setIngredientes(arrayIngredientesFiltrados);
+  }, [receita]);
+
   return (
     <div>
       {
@@ -56,8 +66,6 @@ function RecipeInProgress(props) {
               data-testid="recipe-photo"
             />
             <h1 data-testid="recipe-title">{receita[nomeReceita]}</h1>
-            <button type="button" data-testid="share-btn">Share</button>
-            <button type="button" data-testid="favorite-btn">Favorite</button>
             <h1 data-testid="recipe-category">{categoriaComida}</h1>
             {
               alcoolica && <p>{alcoolica}</p>
@@ -65,8 +73,23 @@ function RecipeInProgress(props) {
             <div>
               <p data-testid="instructions">Instruções</p>
             </div>
+            {
+              ingredientes && ingredientes.map(
+                (cadaUm, index) => (
+                  <label
+                    htmlFor={ cadaUm }
+                    key={ index }
+                    data-testid={ `${index}-ingredient-step` }
+                  >
+                    {cadaUm}
+                    <input type="checkbox" name={ cadaUm } />
+                  </label>
+                ),
+              )
+            }
+            <button type="button" data-testid="share-btn">Share</button>
+            <button type="button" data-testid="favorite-btn">Favorite</button>
             <button type="button" data-testid="finish-recipe-btn">Finish Recipe</button>
-            <h1>oi</h1>
           </div>
         )
       }
