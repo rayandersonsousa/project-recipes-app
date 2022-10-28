@@ -21,7 +21,6 @@ function RecipeInProgress(props) {
         const endpoint = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
         const response = await fetch(endpoint);
         const data = await response.json();
-        console.log(data);
         const { meals } = data;
         setCategoriaComida(meals[0].strCategory);
         setPaginaAtual('Meal');
@@ -45,7 +44,6 @@ function RecipeInProgress(props) {
     buscarDados(paginaLocal, idPag);
   }, [paginaLocal, idPag]);
 
-  console.log(receita);
   useEffect(() => {
     const resultadoDaReceita = Object.entries(receita);
     const arrayIngredientes = resultadoDaReceita
@@ -54,6 +52,29 @@ function RecipeInProgress(props) {
       .map((cadaIng) => cadaIng[1]);
     setIngredientes(arrayIngredientesFiltrados);
   }, [receita]);
+
+  const marcadosAntes = (cadaUm) => {
+    const nome = cadaUm.name;
+    const listaMarcados = localStorage.getItem('inProgressRecipes');
+    const arrayDeMarcados = listaMarcados.split(',');
+    const foiMarcado = arrayDeMarcados.includes(nome);
+    return foiMarcado;
+  };
+
+  const riscarSelecionado = ({ target }) => {
+    const label = target.parentNode;
+    if (localStorage.getItem('inProgressRecipes' === null)) {
+      return null;
+    }
+    const arraySalvos = localStorage.getItem('inProgressRecipes');
+    localStorage.setItem('inProgressRecipes', [arraySalvos, target.name]);
+    if (label.classList.contains('riscarPalavra')) {
+      label.classList.remove('riscarPalavra');
+    } else {
+      label.classList.add('riscarPalavra');
+    }
+    marcadosAntes(target);
+  };
 
   return (
     <div>
@@ -82,7 +103,12 @@ function RecipeInProgress(props) {
                     data-testid={ `${index}-ingredient-step` }
                   >
                     {cadaUm}
-                    <input type="checkbox" name={ cadaUm } />
+                    <input
+                      type="checkbox"
+                      name={ cadaUm }
+                      onChange={ riscarSelecionado }
+                      checked={ () => marcadosAntes(cadaUm) }
+                    />
                   </label>
                 ),
               )
