@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes, { object } from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import DrinksDetails from './DrinksDetails';
+import MealsDetails from './MealsDetails';
 
 function RecipeDetails(props) {
 //   const [details, setDetails] = useState([]);
@@ -12,7 +13,9 @@ function RecipeDetails(props) {
     path.lastIndexOf('/'),
   );
 
-  const verificacao = pathstring === 'meals' ? '' : <DrinksDetails id={ id } />;
+  const verificacao = pathstring === 'meals'
+    ? <MealsDetails id={ id } />
+    : <DrinksDetails id={ id } />;
   return (
     <div>
       { verificacao }
