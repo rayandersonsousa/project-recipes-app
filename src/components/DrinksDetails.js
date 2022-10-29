@@ -1,5 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import shareIcon from '../images/shareIcon.svg';
+import whiteHeart from '../images/whiteHeartIcon.svg';
+import blackHeart from '../images/blackHeartIcon.svg';
+
+const copy = require('clipboard-copy');
 
 function DrinksDetails(props) {
   const { id } = props;
@@ -7,13 +12,37 @@ function DrinksDetails(props) {
   const [details, setDetails] = useState({});
   const [mealsList, setmealsList] = useState([]);
   const [scrollIndex, setScrollIndex] = useState([0, 1]);
+  const [inProgress, setInProgress] = useState();
+  const [clickedOnShare, setClickedOnShare] = useState(false);
+  const [isFavorite, setIsFavorite] = useState();
+
+  const checkIfIsFavorite = () => {
+    console.log('favorite list');
+    const favoritesList = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    console.log(favoritesList);
+    if (favoritesList === undefined) {
+      return;
+    }
+    if (isFavorite !== null && favoritesList.length > 0) {
+      setIsFavorite(favoritesList.some((e) => e.id === details.idDrink));
+    }
+  };
+
+  const checkIfHasStarted = () => {
+    const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    if (inProgressRecipes !== null) {
+      setInProgress(Object.keys(inProgressRecipes.drinks).includes(details.idDrink));
+    }
+  };
 
   const buscarAPIReceitasDetails = async (valorDeBusca) => {
     const endpoint = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${valorDeBusca}`;
     const response = await fetch(endpoint);
     const data = await response.json();
     const { drinks } = data;
-    return setDetails(drinks[0]);
+    setDetails(drinks[0]);
+    checkIfHasStarted();
+    checkIfIsFavorite();
   };
 
   const buscarAPIMeals = async () => {
@@ -44,14 +73,71 @@ function DrinksDetails(props) {
     }
   };
 
-  useEffect(() => {
-    fetchInfo(id);
-  }, []);
-  console.log(mealsList);
-
   const resultadoDaReceita = Object.entries(details);
   const arrayIngredientes = resultadoDaReceita
     .filter((cadaChave) => cadaChave[0].includes('ngredient') && cadaChave[1]);
+
+  const startRecipe = () => {
+    let inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    if (inProgressRecipes === null) {
+      localStorage.setItem('inProgressRecipes', JSON.stringify({
+        drinks: {
+        },
+        meals: {
+        },
+      }));
+    }
+    inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    const ingredients = arrayIngredientes.map((e) => e[0]);
+    inProgressRecipes.drinks[details.idDrink] = ingredients;
+    localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
+    setInProgress(true);
+  };
+
+  const handleCopy = () => {
+    copy(`http://localhost:3000/drinks/${id}`);
+    setClickedOnShare(true);
+  };
+
+  const addToFavorites = () => {
+    const favoriteDrinkInfo = {
+      id: details.idDrink,
+      type: details.strAlcoholic,
+      nationality: '',
+      category: details.strCategory,
+      alcoholicOrNot: details.sstrAlcoholic,
+      name: details.strDrink,
+      image: details.strDrinkThumb,
+      doneDate: new Date(),
+      tags: [details.strTags],
+    };
+    let favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    if (favoriteRecipes === null) {
+      console.log('Setou localStorage Vazio');
+      localStorage.setItem('favoriteRecipes', JSON.stringify([]));
+    }
+    if (isFavorite === undefined || !isFavorite) {
+      console.log('Setou como favorite no local storage');
+      favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
+      favoriteRecipes.push(favoriteDrinkInfo);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
+      setIsFavorite(true);
+      return;
+    }
+    console.log(isFavorite);
+    if (isFavorite) {
+      console.log('setou como false');
+      setIsFavorite(false);
+      const newFavorites = favoriteRecipes.filter((e) => e.id !== details.idDrink);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+      return;
+    }
+    console.log(isFavorite);
+  };
+
+  useEffect(() => {
+    fetchInfo(id);
+  }, [inProgress, isFavorite]);
 
   const arrayMedidas = resultadoDaReceita
     .filter((cadaChave) => cadaChave[0].includes('Measure') && cadaChave[1]);
@@ -60,7 +146,6 @@ function DrinksDetails(props) {
   arrayIngredientes.forEach((e, i) => {
     arrayDeIngredientesEMedidas.push([e[1], arrayMedidas[i][1]]);
   });
-  console.log(mealsList);
   return (
 
     <div className="recipe-details">
@@ -84,6 +169,16 @@ function DrinksDetails(props) {
         ))
       }
       <p data-testid="instructions">{details.strInstructions}</p>
+      <button type="button" data-testid="share-btn" onClick={ handleCopy }>
+        <img
+          src={ shareIcon }
+          alt="share-button"
+        />
+      </button>
+      <p style={ { display: clickedOnShare ? '' : 'none' } }>Link copied!</p>
+      <button type="button" data-testid="favorite-btn" onClick={ addToFavorites }>
+        <img src={ isFavorite ? blackHeart : whiteHeart } alt="favorite logo" />
+      </button>
       <p>Recommended</p>
       <div
         className="recommendation-box"
@@ -106,6 +201,18 @@ function DrinksDetails(props) {
       <button
         type="button"
         data-testid="start-recipe-btn"
+        className="start-recipe-btn"
+        style={ { position: 'fixed', display: inProgress ? '' : 'none' } }
+        onClick={ startRecipe }
+      >
+        Continue Recipe
+      </button>
+      <button
+        type="button"
+        data-testid="start-recipe-btn"
+        className="start-recipe-btn"
+        style={ { position: 'fixed', display: inProgress ? 'none' : '' } }
+        onClick={ startRecipe }
       >
         Start Recipe
       </button>

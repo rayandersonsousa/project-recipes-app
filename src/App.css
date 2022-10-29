@@ -98,4 +98,9 @@
   display: flex;
 }
 
+.start-recipe-btn {
+  bottom: 0px;
+  background-color: red;
+}
+
 
