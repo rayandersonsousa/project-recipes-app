@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import shareIcon from '../images/shareIcon.svg';
-import whiteHeart from '../images/whiteHeartIcon.svg';
-import blackHeart from '../images/blackHeartIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 const copy = require('clipboard-copy');
 
@@ -19,11 +19,12 @@ function DrinksDetails(props) {
   const checkIfIsFavorite = () => {
     console.log('favorite list');
     const favoritesList = JSON.parse(localStorage.getItem('favoriteRecipes'));
-    console.log(favoritesList);
-    if (favoritesList === undefined) {
+    if (favoritesList === [] && favoritesList === undefined) {
+      setIsFavorite(false);
       return;
     }
-    if (isFavorite !== null && favoritesList.length > 0) {
+    if (favoritesList !== null && favoritesList !== []) {
+      console.log(favoritesList);
       setIsFavorite(favoritesList.some((e) => e.id === details.idDrink));
     }
   };
@@ -102,14 +103,12 @@ function DrinksDetails(props) {
   const addToFavorites = () => {
     const favoriteDrinkInfo = {
       id: details.idDrink,
-      type: details.strAlcoholic,
+      type: 'drink',
       nationality: '',
       category: details.strCategory,
-      alcoholicOrNot: details.sstrAlcoholic,
+      alcoholicOrNot: details.strAlcoholic,
       name: details.strDrink,
       image: details.strDrinkThumb,
-      doneDate: new Date(),
-      tags: [details.strTags],
     };
     let favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
     if (favoriteRecipes === null) {
@@ -146,6 +145,7 @@ function DrinksDetails(props) {
   arrayIngredientes.forEach((e, i) => {
     arrayDeIngredientesEMedidas.push([e[1], arrayMedidas[i][1]]);
   });
+  console.log(details);
   return (
 
     <div className="recipe-details">
@@ -176,9 +176,15 @@ function DrinksDetails(props) {
         />
       </button>
       <p style={ { display: clickedOnShare ? '' : 'none' } }>Link copied!</p>
-      <button type="button" data-testid="favorite-btn" onClick={ addToFavorites }>
-        <img src={ isFavorite ? blackHeart : whiteHeart } alt="favorite logo" />
+      <button
+        type="button"
+        style={ { backgroundImage: isFavorite ? blackHeartIcon : whiteHeartIcon } }
+        data-testid="favorite-btn"
+        onClick={ addToFavorites }
+      >
+        favorite
       </button>
+      <img src={ isFavorite ? blackHeartIcon : whiteHeartIcon } alt="favorite logo" />
       <p>Recommended</p>
       <div
         className="recommendation-box"
