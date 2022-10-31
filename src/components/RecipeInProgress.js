@@ -14,9 +14,15 @@ function RecipeInProgress(props) {
   const [paginaAtual, setPaginaAtual] = useState('');
   const [fotoPagina, setFotoPagina] = useState('');
   const [nomeReceita, setNomeReceita] = useState('');
+  // const [ingredientesFeitos, setIngredientesFeitos] = useState([]);
+  const arrayDeEscolhidos = [];
 
   useEffect(() => {
     async function buscarDados(pagina, id) {
+      if (!localStorage.getItem('inProgressRecipes')) {
+        localStorage.setItem('inProgressRecipes', []);
+        console.log('foi');
+      }
       if (pagina === 'meals') {
         const endpoint = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
         const response = await fetch(endpoint);
@@ -53,27 +59,19 @@ function RecipeInProgress(props) {
     setIngredientes(arrayIngredientesFiltrados);
   }, [receita]);
 
-  const marcadosAntes = (cadaUm) => {
-    const nome = cadaUm.name;
-    const listaMarcados = localStorage.getItem('inProgressRecipes');
-    const arrayDeMarcados = listaMarcados.split(',');
-    const foiMarcado = arrayDeMarcados.includes(nome);
-    return foiMarcado;
-  };
-
   const riscarSelecionado = ({ target }) => {
     const label = target.parentNode;
-    if (localStorage.getItem('inProgressRecipes' === null)) {
-      return null;
-    }
-    const arraySalvos = localStorage.getItem('inProgressRecipes');
-    localStorage.setItem('inProgressRecipes', [arraySalvos, target.name]);
+    console.log(target.checked);
+    const jaSalvos = localStorage.getItem('inProgressRecipes');
+    arrayDeEscolhidos.push(target.name);
+    localStorage.setItem('inProgressRecipes', [jaSalvos, arrayDeEscolhidos]);
     if (label.classList.contains('riscarPalavra')) {
       label.classList.remove('riscarPalavra');
+      target.checked = false;
     } else {
       label.classList.add('riscarPalavra');
+      target.checked = true;
     }
-    marcadosAntes(target);
   };
 
   return (
@@ -101,14 +99,29 @@ function RecipeInProgress(props) {
                     htmlFor={ cadaUm }
                     key={ index }
                     data-testid={ `${index}-ingredient-step` }
+                    className={ (localStorage
+                      .getItem('inProgressRecipes').includes(cadaUm))
+                      ? 'riscarPalavra' : null }
                   >
                     {cadaUm}
-                    <input
-                      type="checkbox"
-                      name={ cadaUm }
-                      onChange={ riscarSelecionado }
-                      checked={ () => marcadosAntes(cadaUm) }
-                    />
+                    {
+                      localStorage.getItem('inProgressRecipes')
+                        .includes(cadaUm) ? (
+                          <input
+                            type="checkbox"
+                            name={ cadaUm }
+                            onChange={ riscarSelecionado }
+                            checked
+                          />
+                        ) : (
+                          <input
+                            type="checkbox"
+                            name={ cadaUm }
+                            onChange={ riscarSelecionado }
+                          />
+                        )
+                    }
+
                   </label>
                 ),
               )
