@@ -6,6 +6,7 @@ import Provider from '../context/Provider';
 import renderWithRouter from './helpers/helpers';
 
 describe('Testes para a página de Receitas Favoritas', () => {
+  const favoriteRoute = '/favorite-recipes';
   const favoriteRecipes = [
     {
       id: '52771',
@@ -42,7 +43,7 @@ describe('Testes para a página de Receitas Favoritas', () => {
       </Provider>,
     );
     act(() => {
-      history.push('/favorite-recipes');
+      history.push(favoriteRoute);
     });
 
     const btnAll = screen.getByRole('button', {
@@ -67,7 +68,7 @@ describe('Testes para a página de Receitas Favoritas', () => {
       </Provider>,
     );
     act(() => {
-      history.push('/favorite-recipes');
+      history.push(favoriteRoute);
     });
 
     const btnMeal = screen.getByRole('img', {
@@ -88,7 +89,7 @@ describe('Testes para a página de Receitas Favoritas', () => {
       </Provider>,
     );
     act(() => {
-      history.push('/favorite-recipes');
+      history.push(favoriteRoute);
     });
 
     const btnDrink = screen.getByRole('img', {
@@ -109,7 +110,7 @@ describe('Testes para a página de Receitas Favoritas', () => {
       </Provider>,
     );
     act(() => {
-      history.push('/favorite-recipes');
+      history.push(favoriteRoute);
     });
 
     const btnAll = screen.getByRole('img', {

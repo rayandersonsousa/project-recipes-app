@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Header from './Header';
 import CardFavorites from './CardFavorites';
 import mealIcon from '../images/mealIcon.svg';
