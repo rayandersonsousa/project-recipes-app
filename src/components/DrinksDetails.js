@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
@@ -77,7 +78,7 @@ function DrinksDetails(props) {
   const resultadoDaReceita = Object.entries(details);
   const arrayIngredientes = resultadoDaReceita
     .filter((cadaChave) => cadaChave[0].includes('ngredient') && cadaChave[1]);
-
+  const history = useHistory();
   const startRecipe = () => {
     let inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
     if (inProgressRecipes === null) {
@@ -93,6 +94,8 @@ function DrinksDetails(props) {
     inProgressRecipes.drinks[details.idDrink] = ingredients;
     localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
     setInProgress(true);
+
+    history.push(`/drinks/${id}/in-progress`);
   };
 
   const handleCopy = () => {
@@ -178,13 +181,13 @@ function DrinksDetails(props) {
       <p style={ { display: clickedOnShare ? '' : 'none' } }>Link copied!</p>
       <button
         type="button"
-        style={ { backgroundImage: isFavorite ? blackHeartIcon : whiteHeartIcon } }
+        // style={ { backgroundImage: isFavorite ? blackHeartIcon : whiteHeartIcon } }
+        src={ isFavorite ? blackHeartIcon : whiteHeartIcon }
         data-testid="favorite-btn"
         onClick={ addToFavorites }
       >
-        favorite
+        <img src={ isFavorite ? blackHeartIcon : whiteHeartIcon } alt="favorite logo" />
       </button>
-      <img src={ isFavorite ? blackHeartIcon : whiteHeartIcon } alt="favorite logo" />
       <p>Recommended</p>
       <div
         className="recommendation-box"
@@ -208,19 +211,10 @@ function DrinksDetails(props) {
         type="button"
         data-testid="start-recipe-btn"
         className="start-recipe-btn"
-        style={ { position: 'fixed', display: inProgress ? '' : 'none' } }
+        style={ { position: 'fixed' } }
         onClick={ startRecipe }
       >
-        Continue Recipe
-      </button>
-      <button
-        type="button"
-        data-testid="start-recipe-btn"
-        className="start-recipe-btn"
-        style={ { position: 'fixed', display: inProgress ? 'none' : '' } }
-        onClick={ startRecipe }
-      >
-        Start Recipe
+        {inProgress ? <p>Continue Recipe</p> : <p>Start Recipe</p> }
       </button>
     </div>
   );
