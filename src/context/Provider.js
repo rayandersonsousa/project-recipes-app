@@ -5,6 +5,8 @@ import AppContext from './AppContext';
 function Provider({ children }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [local, setLocal] = useState([]);
+  const [reciFav, setReciFav] = useState('');
   const [isDisable, setDisable] = useState(true);
   const [recipesMeals, setRecipesMeals] = useState([]);
   const [recipesDrinks, setRecipesDrinks] = useState([]);
@@ -22,6 +24,10 @@ function Provider({ children }) {
     const checkData = !(emailOk && passwordOk);
     setDisable(checkData);
   };
+
+  // const favoritesLocal = JSON.parse(localStorage.getItem('favoriteRecipes'));
+  // setLocal(favoritesLocal);
+  // setReciFav(local);
 
   const handleInpuEmail = ({ target }) => {
     setEmail(target.value);
@@ -154,7 +160,11 @@ function Provider({ children }) {
     setNomeReceita,
     idReceita,
     setIdReceita,
-  }), [email, password, isDisable, recipesMeals, recipesDrinks]);
+    local,
+    setLocal,
+    reciFav,
+    setReciFav,
+  }), [email, password, isDisable, recipesMeals, recipesDrinks, local, reciFav]);
 
   return (
     <AppContext.Provider value={ contexto }>

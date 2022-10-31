@@ -10,9 +10,8 @@ import Profile from './components/Profile';
 import DoneRecipes from './components/DoneRecipes';
 import FavoriteRecipes from './components/FavoriteRecipes';
 import ReceitaMeal from './components/ReceitaMeal';
-import ReceitaMealInProgress from './components/ReceitaMealInProgress';
 import ReceitaDrink from './components/ReceitaDrink';
-import ReceitaDrinkInProgress from './components/ReceitaDrinkInProgress';
+import RecipeInProgress from './components/RecipeInProgress';
 
 function App() {
   return (
@@ -34,11 +33,11 @@ function App() {
         <Route exact path="/favorite-recipes" component={ FavoriteRecipes } />
         <Route exact path="/meals/:id" component={ ReceitaMeal } />
         <Route exact path="/drinks/:id" component={ ReceitaDrink } />
-        <Route exact path="/meals/:id/in-progress" component={ ReceitaMealInProgress } />
+        <Route exact path="/meals/:id/in-progress" component={ RecipeInProgress } />
         <Route
           exact
           path="/drinks/:id/in-progress"
-          component={ ReceitaDrinkInProgress }
+          component={ RecipeInProgress }
         />
       </Switch>
     </div>
