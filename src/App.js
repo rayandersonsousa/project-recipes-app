@@ -37,7 +37,7 @@ function App() {
         <Route
           exact
           path="/drinks/:id/in-progress"
-          component={ ReceitaDrinkInProgress }
+          component={ RecipeInProgress }
         />
       </Switch>
     </div>
