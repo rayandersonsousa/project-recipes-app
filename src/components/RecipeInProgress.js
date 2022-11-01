@@ -8,7 +8,6 @@ function RecipeInProgress(props) {
   const infosPag = url.split('/');
   const paginaLocal = infosPag[1];
   const idPag = infosPag[2];
-
   const [receita, setReceita] = useState([]);
   const [ingredientes, setIngredientes] = useState([]);
   const [categoriaComida, setCategoriaComida] = useState('');
@@ -17,11 +16,10 @@ function RecipeInProgress(props) {
   const [fotoPagina, setFotoPagina] = useState('');
   const [nomeReceita, setNomeReceita] = useState('');
   const [foiFavorito, setfoiFavorito] = useState(whiteHeart);
-  // const [ingredientesFeitos, setIngredientesFeitos] = useState([]);
   const [copiado, setCopiado] = useState(false);
   const [marcados, setMarcados] = useState(0);
   const [disabled, setDisabled] = useState(true);
-  const arrayDeEscolhidos = [];
+  const arrayChosen = [];
 
   useEffect(() => {
     async function buscarDados(pagina, id) {
@@ -31,11 +29,13 @@ function RecipeInProgress(props) {
       if (!localStorage.getItem('favoriteRecipes')) {
         localStorage.setItem('favoriteRecipes', []);
       }
+      if (!localStorage.getItem('doneRecipes')) {
+        localStorage.setItem('doneRecipes', []);
+      }
       if (pagina === 'meals') {
         const endpoint = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
         const response = await fetch(endpoint);
-        const data = await response.json();
-        const { meals } = data;
+        const { meals } = await response.json();
         setCategoriaComida(meals[0].strCategory);
         setPaginaAtual('Meal');
         setFotoPagina('strMealThumb');
@@ -45,8 +45,7 @@ function RecipeInProgress(props) {
       if (pagina === 'drinks') {
         const endpoint = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
         const response = await fetch(endpoint);
-        const data = await response.json();
-        const { drinks } = data;
+        const { drinks } = await response.json();
         setAlcoolica(drinks[0].strAlcoholic);
         setCategoriaComida(drinks[0].strCategory);
         setPaginaAtual('Drink');
@@ -57,7 +56,6 @@ function RecipeInProgress(props) {
     }
     buscarDados(paginaLocal, idPag);
   }, [paginaLocal, idPag]);
-
   useEffect(() => {
     const resultadoDaReceita = Object.entries(receita);
     const arrayIngredientes = resultadoDaReceita
@@ -66,7 +64,6 @@ function RecipeInProgress(props) {
       .map((cadaIng) => cadaIng[1]);
     setIngredientes(arrayIngredientesFiltrados);
   }, [receita]);
-
   useEffect(() => {
     const favoritados = localStorage.getItem('favoriteRecipes');
     const nameRecipe = receita[nomeReceita];
@@ -75,17 +72,11 @@ function RecipeInProgress(props) {
     }
     return setfoiFavorito(whiteHeart);
   }, [nomeReceita, foiFavorito]);
-
   const riscarSelecionado = ({ target }) => {
     const label = target.parentNode;
     const jaSalvos = localStorage.getItem('inProgressRecipes');
-    arrayDeEscolhidos.push(target.name);
-    localStorage.setItem('inProgressRecipes', [jaSalvos, arrayDeEscolhidos]);
-    const todosOsFavoritados = localStorage.getItem('inProgressRecipes');
-    const agoraVaiReceitasFavoritadas = todosOsFavoritados.split(',');
-    const arrayDefinitivo = agoraVaiReceitasFavoritadas
-      .filter((cadaReceita) => cadaReceita.length > 1);
-    localStorage.setItem('inProgressRecipes', arrayDefinitivo);
+    arrayChosen.push(target.name);
+    localStorage.setItem('inProgressRecipes', [jaSalvos, arrayChosen]);
     if (label.classList.contains('riscarPalavra')) {
       label.classList.remove('riscarPalavra');
       target.checked = false;
@@ -95,56 +86,86 @@ function RecipeInProgress(props) {
       setMarcados((oldState) => oldState + 1);
     }
   };
-
   useEffect(() => {
     const jaSalvos = localStorage.getItem('inProgressRecipes');
     const novoArray = jaSalvos.split(',');
     novoArray.forEach((cadaUm) => {
       if (ingredientes.includes(cadaUm)) {
-        console.log(cadaUm);
         return setMarcados((oldState) => oldState + 1);
       }
-      if (marcados !== 0 && marcados === ingredientes.length) {
+      if (marcados !== 0 && marcados >= ingredientes.length) {
         setDisabled(false);
       }
     });
   }, [ingredientes]);
-
   useEffect(() => {
-    if (marcados !== 0 && marcados === ingredientes.length) {
+    if (marcados !== 0 && marcados >= ingredientes.length) {
       setDisabled(false);
     }
   }, [marcados]);
+  const favReceita = (nome) => {
+    const pegarReceitas = localStorage.getItem('favoriteRecipes');
+    const receitaFav = [{
+      id: idPag,
+      type: paginaAtual === 'Meal' ? 'meal' : 'drink',
+      nationality: receita.strArea || '',
+      category: receita.strCategory,
+      alcoholicOrNot: alcoolica,
+      name: receita[nomeReceita],
+      image: receita[fotoPagina],
+    }];
+    console.log(pegarReceitas.length);
 
-  const favoritarReceita = (nome) => {
-    const pegarReceitasLocalStorage = localStorage.getItem('favoriteRecipes');
-    const novasReceitasFavoritadas = pegarReceitasLocalStorage.split(',');
-    const listaReceitasFavoritas = novasReceitasFavoritadas
-      .filter((cadaReceita) => cadaReceita.length > 1);
-    if (listaReceitasFavoritas.includes(nome)) {
-      const removerNome = listaReceitasFavoritas
-        .filter((cadaFav) => cadaFav !== nome);
-      localStorage.setItem('favoriteRecipes', removerNome);
-      const todosOsFavoritados = localStorage.getItem('favoriteRecipes');
-      const agoraVaiReceitasFavoritadas = todosOsFavoritados.split(',');
-      const arrayDefinitivo = agoraVaiReceitasFavoritadas
-        .filter((cadaReceita) => cadaReceita.length > 1);
-      localStorage.setItem('favoriteRecipes', arrayDefinitivo);
-      setfoiFavorito(whiteHeart);
-    } else {
-      localStorage.setItem('favoriteRecipes', [listaReceitasFavoritas, nome]);
-      const todosOsFavoritados = localStorage.getItem('favoriteRecipes');
-      const agoraVaiReceitasFavoritadas = todosOsFavoritados.split(',');
-      const arrayDefinitivo = agoraVaiReceitasFavoritadas
-        .filter((cadaReceita) => cadaReceita.length > 1);
-      localStorage.setItem('favoriteRecipes', arrayDefinitivo);
-      setfoiFavorito(blackHeart);
+    if (pegarReceitas.length > 0) {
+      const arrayDePegos = JSON.parse(pegarReceitas);
+      const final = arrayDePegos.map((cadaReceita) => {
+        if (cadaReceita.name === nome) {
+          const removerNome = arrayDePegos
+            .filter((cadaFav) => cadaFav.name !== nome);
+          console.log(removerNome);
+          localStorage.setItem('favoriteRecipes', removerNome);
+          console.log('nao foi');
+          return setfoiFavorito(whiteHeart);
+        }
+        localStorage
+          .setItem(
+            'favoriteRecipes',
+            [JSON.stringify(arrayDePegos), JSON.stringify(receitaFav)],
+          );
+        console.log('foi');
+        return setfoiFavorito(blackHeart);
+      });
+      return final;
     }
+    localStorage.setItem('favoriteRecipes', [JSON.stringify(receitaFav)]);
+    console.log('foi aqui');
+    return setfoiFavorito(blackHeart);
   };
-
   const copiarProClipBoard = () => {
     navigator.clipboard.writeText(`http://localhost:3000/${paginaLocal}/${idPag}`);
     return setCopiado(true);
+  };
+  const salvarEMudarDePag = () => {
+    const jaSalvos = localStorage.getItem('doneRecipes');
+    const date = new Date();
+    const favoriteRecipes = [{
+      id: idPag,
+      type: paginaAtual === 'Meal' ? 'meal' : 'drink',
+      nationality: receita.strArea || '',
+      category: receita.strCategory,
+      alcoholicOrNot: alcoolica,
+      name: receita[nomeReceita],
+      image: receita[fotoPagina],
+      doneDate: date,
+      tags: receita.strTags === null ? [] : receita.strTags.split(','),
+    }];
+    if (jaSalvos.length === 0) {
+      localStorage.setItem('doneRecipes', [JSON.stringify(favoriteRecipes)]);
+    } else {
+      localStorage.setItem('doneRecipes', [jaSalvos, JSON.stringify(favoriteRecipes)]);
+    }
+    const { history } = props;
+    history.push('/done-recipes');
   };
 
   return (
@@ -198,30 +219,18 @@ function RecipeInProgress(props) {
                 ),
               )
             }
-            <button
-              type="button"
-              onClick={ copiarProClipBoard }
-              data-testid="share-btn"
-            >
+            <button type="button" onClick={ copiarProClipBoard } data-testid="share-btn">
               Share
             </button>
-            {
-              copiado && (<p>Link copied!</p>)
-            }
-            <button
-              type="button"
-              onClick={ () => favoritarReceita(receita[nomeReceita]) }
-            >
-              <img
-                data-testid="favorite-btn"
-                src={ foiFavorito }
-                alt="favoritado"
-              />
+            { copiado && (<p>Link copied!</p>) }
+            <button type="button" onClick={ () => favReceita(receita[nomeReceita]) }>
+              <img data-testid="favorite-btn" src={ foiFavorito } alt="favoritado" />
             </button>
             <button
               type="button"
               data-testid="finish-recipe-btn"
               disabled={ disabled }
+              onClick={ salvarEMudarDePag }
             >
               Finish Recipe
             </button>
@@ -232,8 +241,6 @@ function RecipeInProgress(props) {
   );
 }
 
-RecipeInProgress.propTypes = {
-  url: PropTypes.string,
-}.isRequired;
+RecipeInProgress.propTypes = { url: PropTypes.string }.isRequired;
 
 export default RecipeInProgress;
