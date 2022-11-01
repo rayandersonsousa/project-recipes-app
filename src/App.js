@@ -10,8 +10,8 @@ import Profile from './components/Profile';
 import DoneRecipes from './components/DoneRecipes';
 import FavoriteRecipes from './components/FavoriteRecipes';
 import RecipeInProgress from './components/RecipeInProgress';
-// import ReceitaDrinkInProgress from './components/ReceitaDrinkInProgress';
 import RecipeDetails from './components/RecipeDetails';
+
 
 function App() {
   return (
