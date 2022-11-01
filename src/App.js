@@ -12,7 +12,6 @@ import FavoriteRecipes from './components/FavoriteRecipes';
 import RecipeInProgress from './components/RecipeInProgress';
 import RecipeDetails from './components/RecipeDetails';
 
-
 function App() {
   return (
     <div className="meals">
